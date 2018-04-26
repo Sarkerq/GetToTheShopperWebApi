@@ -1,0 +1,48 @@
+﻿<UserControl x:Class="GetToTheShopper.Clients.Seller.View.ShopsList"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:local="clr-namespace:GetToTheShopper.Clients.Seller.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="720" d:DesignWidth="1280"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+	<Grid>
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="70"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+			<StackPanel Orientation="Horizontal">
+				<Button Margin="20, 10" Style="{StaticResource MaterialDesignFloatingActionMiniButton}" Command="{Binding OwnerWindow.SelectCategoryCommand}">
+					<materialDesign:PackIcon Kind="ArrowLeft"/>
+				</Button>
+				<TextBlock Text="Shops" Margin="20, 10" FontSize="30" VerticalAlignment="Center"/>
+			</StackPanel>
+			<ListView Name ="ListViewShopsList" Grid.Row="1" Margin="10" ItemsSource="{Binding ShopsList}" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+				<i:Interaction.Triggers>
+					<i:EventTrigger EventName="MouseLeftButtonUp">
+						<i:InvokeCommandAction Command="{Binding OwnerWindow.ShopCommand}" CommandParameter="{Binding SelectedItem, ElementName=ListViewShopsList}"/>
+					</i:EventTrigger>
+				</i:Interaction.Triggers>
+				<ListView.View>
+					<GridView>
+						<GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}"/>
+						<GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}"/>
+						<GridViewColumn Header="Address" DisplayMemberBinding="{Binding Address}"/>
+					</GridView>
+				</ListView.View>
+				<ListView.ContextMenu>
+					<ContextMenu>
+						<MenuItem Header="Edit shop" Command="{Binding EditShopDialogCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}"/>
+						<MenuItem Header="Delete shop" Command="{Binding DeleteShopDialogCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}"/>
+					</ContextMenu>
+				</ListView.ContextMenu>
+			</ListView>
+		</Grid>
+		<Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="20" Style="{StaticResource MaterialDesignFloatingActionButton}" Command="{Binding AddShopDialogCommand}">
+			<materialDesign:PackIcon Kind="Plus"/>
+		</Button>
+	</Grid>
+</UserControl>

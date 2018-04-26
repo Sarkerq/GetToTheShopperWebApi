@@ -1,0 +1,45 @@
+﻿<Window x:Class="GetToTheShopper.Clients.Seller.AppWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GetToTheShopper.Clients.Seller"
+        xmlns:viewmodels="clr-namespace:GetToTheShopper.Clients.Seller.ViewModel"
+        xmlns:views="clr-namespace:GetToTheShopper.Clients.Seller.View"
+        mc:Ignorable="d"
+        
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+		TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+        
+        Title="Get To The Shopper" Height="300" Width="300" WindowStartupLocation="CenterScreen" WindowState="Maximized">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type viewmodels:ShopsListViewModel}">
+            <views:ShopsList/>
+        </DataTemplate>
+		<DataTemplate DataType="{x:Type viewmodels:SignUpViewModel}">
+			<views:SignUpDialog/>
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type viewmodels:SelectCategoryViewModel}">
+			<views:SelectCategory/>
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type viewmodels:ProductsListViewModel}">
+            <views:ProductsList/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:ShopViewModel}">
+            <views:Shop/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:AdminStartViewModel}">
+            <views:AdminStartpage/>
+        </DataTemplate>
+		
+	</Window.Resources>
+    <Grid>
+        <materialDesign:DialogHost Identifier="RootDialog">
+            <ContentControl x:Name="Pages" Content="{Binding SelectedViewModel}"/>
+        </materialDesign:DialogHost>
+    </Grid>
+</Window>

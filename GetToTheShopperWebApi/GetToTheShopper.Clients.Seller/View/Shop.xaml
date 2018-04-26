@@ -1,0 +1,62 @@
+﻿<UserControl x:Class="GetToTheShopper.Clients.Seller.View.Shop"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GetToTheShopper.Clients.Seller.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="720" d:DesignWidth="1280"
+             
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+	<Grid>
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="70"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+
+			<StackPanel Orientation="Horizontal">
+				<Button Margin="20, 10" Style="{StaticResource MaterialDesignFloatingActionMiniButton}" Command="{Binding OwnerWindow.ShopsListCommand}">
+					<materialDesign:PackIcon Kind="ArrowLeft"/>
+				</Button>
+				<TextBlock Margin="20, 10" FontSize="30" VerticalAlignment="Center"><Run Text="Products in shop"/>
+					<InlineUIContainer>
+					</InlineUIContainer>
+				</TextBlock>
+			</StackPanel>
+
+			<ListView Grid.Row="1" Margin="10" ItemsSource="{Binding ShopProductList}" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+				<ListView.View>
+					<GridView>
+						<GridViewColumn Header="Id" DisplayMemberBinding="{Binding Product.Id}"/>
+						<GridViewColumn Header="Name" DisplayMemberBinding="{Binding Product.Name}"/>
+						<GridViewColumn Header="Unit" DisplayMemberBinding="{Binding Product.Unit.Name}"/>
+						<GridViewColumn Header="Price for unit" DisplayMemberBinding="{Binding Product.Price, StringFormat={}{0:N2} zł}"/>
+						<GridViewColumn Header="Available quantity (in proper unit)" DisplayMemberBinding="{Binding AvailableUnits}"/>
+						<GridViewColumn Header="Aisle" DisplayMemberBinding="{Binding Aisle}"/>
+					</GridView>
+				</ListView.View>
+				<ListView.ContextMenu>
+					<ContextMenu>
+						<MenuItem Header="Edit product" Command="{Binding EditShopProductDialogCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}"/>
+						<MenuItem Header="Delete product" Command="{Binding DeleteShopProductDialogCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}"/>
+					</ContextMenu>
+				</ListView.ContextMenu>
+			</ListView>
+			<!--<DataGrid IsReadOnly="True" ItemsSource="{Binding ShopProductList}" AutoGenerateColumns="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Id" Binding="{Binding Product.Id}"/>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Product.Name}"/>
+                    <DataGridTextColumn Header="Unit" Binding="{Binding Product.Unit}"/>
+                    <DataGridTextColumn Header="Price for unit (in PLN)" Binding="{Binding Product.Price, StringFormat={}{0:N2} zł}"/>
+                    <DataGridTextColumn Header="Available quantity (in proper unit)" Binding="{Binding AvailableUnits}"/>
+                    <DataGridTextColumn Header="Aisle" Binding="{Binding Aisle}"/>
+                </DataGrid.Columns>
+            </DataGrid>-->
+		</Grid>
+		<Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="20" 
+				Style="{StaticResource MaterialDesignFloatingActionButton}" Command="{Binding SelectProductDialogCommand}">
+			<materialDesign:PackIcon Kind="Plus"/>
+		</Button>
+	</Grid>
+</UserControl>

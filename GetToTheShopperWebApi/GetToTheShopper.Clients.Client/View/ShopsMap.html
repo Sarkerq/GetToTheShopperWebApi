@@ -1,0 +1,64 @@
+﻿<!-- saved from url=(0014)about:internet -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <style>
+        b, h1
+        {
+            font-weight: bold;
+        }
+    </style>
+    <script type="text/javascript">
+        var map;
+        var infowindow;
+        var markersDescs = [];
+        var markersShopIds = [];
+        var markersDescIndex = 0;
+        function initialize()
+        {
+            var body = document.getElementById("body");
+            var height = window.innerHeight;
+            body.style.height = height + "px";
+        }
+        function initMap()
+        {
+            infowindow = new google.maps.InfoWindow();
+            var warszawa = {lat: 52.231593, lng: 21.033036 };
+            var options = {
+                zoom: 10,
+              center: warszawa
+            };
+            map = new google.maps.Map(document.getElementById("map_canvas"), options);
+            //addMarker(-1, 52.231593, 21.033036, "dd", "dd", 1);
+        }
+        function addMarker(shopid, lat, lng, name, address, availability) {
+            var icon = "Img/marker-red.png";
+            if (availability > 0.4)
+                icon = "Img/marker-yellow.png";
+            if (availability > 0.8)
+                icon = "Img/marker-green.png";
+            var marker = new google.maps.Marker({
+                position: new google.maps.LatLng(lat, lng),
+                map: map,
+                icon: icon
+            });
+            var percent = parseInt(availability * 100);
+            markersDescs[markersDescIndex] = "<h1>" + name + "</h1>Address: <b>" + address + "</b><br>Availability: <b>" + percent + "%</b>";
+            markersShopIds[markersDescIndex] = shopid;
+            google.maps.event.addListener(marker, "click", (function (marker, index) {
+                return function (e) {
+                    infowindow.setContent(markersDescs[index]);
+                    infowindow.open(map, marker);
+                    window.external.SelectShop(markersShopIds[index]);
+                }
+            })(marker, markersDescIndex));
+            markersDescIndex++;
+        }
+    </script>
+</head>
+<body id="body" onload="initialize()" style="margin:0;">
+    <div id="map_canvas" style="width:100%; height:100%;"></div>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbUdIqOvrWqpzBjdn7JvcjE6hRJzxShps&callback=initMap"></script>
+</body>
+</html>

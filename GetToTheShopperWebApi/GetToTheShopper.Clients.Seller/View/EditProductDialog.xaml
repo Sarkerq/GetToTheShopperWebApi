@@ -1,0 +1,84 @@
+﻿<UserControl x:Class="GetToTheShopper.Clients.Seller.View.EditProductDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GetToTheShopper.Clients.Seller.View"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+			 xmlns:validators="clr-namespace:GetToTheShopper.Clients.Seller.ValidationRules"
+			 xmlns:validatorsCore="clr-namespace:GetToTheShopper.Clients.Core.ValidationRules;assembly=GetToTheShopper.Clients.Core"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" Height="222.617" Width="375.557" Margin="10">
+	<UserControl.Resources>
+		<validators:CheckIfProductNameExists x:Key="CheckIfProductNameExists"/>
+		<validatorsCore:CheckPriceRange x:Key="CheckPriceRange"/>
+		<validatorsCore:CheckName x:Key="CheckName"/>
+	</UserControl.Resources>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="*" />
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+		<TextBlock Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" Margin="10" TextWrapping="Wrap" Text="Name" VerticalAlignment="Center"/>
+		<TextBox x:Name="nameTextBox"  Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Height="30">
+			<TextBox.Text>
+				<Binding Path="Product.Name"  UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
+					<Binding.ValidationRules>
+						<validators:CheckIfProductNameExists Message="Name already used" FirstSieveMessage ="Name cannot be empty"/>
+					</Binding.ValidationRules>
+				</Binding>
+			</TextBox.Text>
+		</TextBox>
+		<TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" TextAlignment="Right" Margin="10" TextWrapping="Wrap" Text="Unit" VerticalAlignment="Center"/>
+		<ComboBox Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Center" Width="120" Height="30"
+                  ItemsSource="{Binding UnitValues}" DisplayMemberPath="Name" SelectedValue="{Binding SelectedUnit, Mode=TwoWay}" />
+
+		<TextBlock Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" TextAlignment="Right" Margin="10" TextWrapping="Wrap" Text="Price for unit (in PLN)" VerticalAlignment="Center"/>
+		<TextBox x:Name="priceTextBox" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap" VerticalAlignment="Center" Width="120" Height="30"
+							>
+			<TextBox.Text>
+				<Binding Path="Product.Price"  UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True" StringFormat="N2">
+					<Binding.ValidationRules>
+						<validatorsCore:CheckPriceRange Min="0" Message="Please put non-negative price"/>
+					</Binding.ValidationRules>
+				</Binding>
+			</TextBox.Text>
+		</TextBox>
+
+
+		<Button Grid.Column="0" Grid.Row="5" Content="Cancel" HorizontalAlignment="Center" Margin="10" VerticalAlignment="Bottom" Width="75" Style="{DynamicResource MaterialDesignFlatButton}"
+                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+			<Button.CommandParameter>
+				<system:Boolean>False</system:Boolean>
+			</Button.CommandParameter>
+		</Button>
+		<Button Grid.Column="1" Grid.Row="5" Content="{Binding AcceptDialogText}" HorizontalAlignment="Center" Margin="10" VerticalAlignment="Bottom" Width="75"  IsDefault="True" 
+            Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+			<!--
+             xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"-->
+			<Button.CommandParameter>
+				<system:Boolean>True</system:Boolean>
+			</Button.CommandParameter>
+			<Button.Style>
+				<Style TargetType="{x:Type Button}" BasedOn="{StaticResource MaterialDesignFlatButton}">
+					<Setter Property="IsEnabled" Value="false" />
+					<Style.Triggers>
+						<MultiDataTrigger>
+							<MultiDataTrigger.Conditions>
+								<Condition Binding="{Binding ElementName=nameTextBox, Path=(Validation.HasError)}" Value="false" />
+								<Condition Binding="{Binding ElementName=priceTextBox, Path=(Validation.HasError)}" Value="false" />
+							</MultiDataTrigger.Conditions>
+							<Setter Property="IsEnabled" Value="true" />
+						</MultiDataTrigger>
+					</Style.Triggers>
+				</Style>
+			</Button.Style>
+		</Button>
+	</Grid>
+</UserControl>

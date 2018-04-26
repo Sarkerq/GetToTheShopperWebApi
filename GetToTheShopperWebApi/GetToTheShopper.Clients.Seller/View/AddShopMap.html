@@ -1,0 +1,49 @@
+﻿<!-- saved from url=(0014)about:internet -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+
+    <script type="text/javascript">
+        var map;
+        var nMarker;
+        function initialize()
+        {
+            var body = document.getElementById("body");
+            var height = window.innerHeight;
+            body.style.height = height + "px";
+        }
+        function initMap()
+        {
+            infowindow = new google.maps.InfoWindow();
+            var warszawa = {lat: 52.231593, lng: 21.033036 };
+            var options = {
+                zoom: 10,
+              center: warszawa
+            };
+            map = new google.maps.Map(document.getElementById("map_canvas"), options);
+            google.maps.event.addListener(map, 'click', function (event) {
+                addMarker(event.latLng.lat(), event.latLng.lng());
+                window.external.MarkerChanged(nMarker.position.lat(), nMarker.position.lng());
+            });
+        }
+        function addMarker(lat, lng)
+        {
+            var latLng = { lat: lat, lng: lng };
+            if (nMarker)
+                nMarker.setPosition(latLng);
+            else {
+                nMarker = new google.maps.Marker({
+                    position: latLng,
+                    draggable: true,
+                    map: map
+                });
+            }
+        }
+    </script>
+</head>
+<body id="body" onload="initialize()" style="margin:0;">
+    <div id="map_canvas" style="width:100%; height:100%;"></div>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbUdIqOvrWqpzBjdn7JvcjE6hRJzxShps&callback=initMap"></script>
+</body>
+</html>

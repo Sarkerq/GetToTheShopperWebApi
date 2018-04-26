@@ -1,0 +1,38 @@
+﻿<Window x:Class="GetToTheShopper.Clients.Client.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewmodels="clr-namespace:GetToTheShopper.Clients.Client.ViewModel"
+        xmlns:local="clr-namespace:GetToTheShopper.Clients.Client"
+        mc:Ignorable="d"
+        
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:views="clr-namespace:GetToTheShopper.Clients.Client.View"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+        
+        Title="Get To The Shopper" WindowStartupLocation="CenterScreen" WindowState="Maximized">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type viewmodels:ClientStartViewModel}">
+            <views:ClientStartPage/>
+        </DataTemplate>
+		<DataTemplate DataType="{x:Type viewmodels:SignUpViewModel}">
+			<views:SignUpDialog/>
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type viewmodels:ReceiptsListViewModel}">
+            <views:ReceiptsList/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:ReceiptViewModel}">
+            <views:Receipts/>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <materialDesign:DialogHost Identifier="RootDialog">
+            <ContentControl x:Name="Pages" Content="{Binding SelectedViewModel}"/>
+        </materialDesign:DialogHost>
+    </Grid>
+</Window>
